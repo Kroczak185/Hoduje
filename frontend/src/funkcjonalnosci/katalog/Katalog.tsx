@@ -3,7 +3,7 @@ import { Zwierze } from "../../app/modele/zwierze";
 import ZwierzeLista from "./ZwierzeLista";
 
 
-export default function Catalog() {
+export default function Katalog() {
 
     const [zwierzeta, ustawZwierzeta] = useState<Zwierze[]>([]);
 

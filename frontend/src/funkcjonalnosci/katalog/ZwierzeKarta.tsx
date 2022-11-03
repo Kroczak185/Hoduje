@@ -1,4 +1,5 @@
 import { Avatar, Button, Card, CardActions, CardContent, CardHeader, CardMedia, Typography } from "@mui/material";
+import { Link } from "react-router-dom";
 import { Zwierze } from "../../app/modele/zwierze";
 
 interface Props {
@@ -37,7 +38,7 @@ export default function ZwierzeKarta({ zwierze }: Props) {
             </CardContent>
             <CardActions>
                 <Button size="small">Dodaj do koszyka</Button>
-                <Button size="small">Wyświetl</Button>
+                <Button component={Link} to={`/katalog/${zwierze.id}`} size="small">Wyświetl</Button>
             </CardActions>
         </Card>
     )
