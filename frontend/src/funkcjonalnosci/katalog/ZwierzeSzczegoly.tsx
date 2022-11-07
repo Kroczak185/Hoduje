@@ -1,8 +1,10 @@
 import { Divider, Grid, Table, TableBody, TableCell, TableContainer, TableRow, Typography } from "@mui/material"
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom"
+import agent from "../../app/api/agent";
+import NotFound from "../../app/errors/NotFound";
 import { Zwierze } from "../../app/modele/zwierze";
+import Ladowanie from "../../app/widoki/Ladownie";
 
 export default function ZwierzeSzczegoly(){
     const {id} = useParams<{id: string}>();
@@ -12,14 +14,14 @@ export default function ZwierzeSzczegoly(){
 
     
     useEffect(()=>{
-        axios.get(`http://localhost:5000/backend/zwierzeta/${id}`)
-        .then(response => ustawZwierze(response.data))
+        agent.Catalog.details(parseInt(id))
+        .then(response => ustawZwierze(response))
         .catch(error => console.log(error))
         .finally(()=> ustawLadowanie(false));
     },[id])
 
-    if(ladowanie) return <h3>Ładowanie...</h3>
-    if(!zwierze) return <h3>Zwierze nie znaleziono</h3>
+    if(ladowanie) return <Ladowanie message="Ładowanie... "/>
+    if(!zwierze) return <NotFound />
 
     var plec = "";
 

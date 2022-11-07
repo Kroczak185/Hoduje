@@ -9,9 +9,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BackEnd.Controllers
 {
-    [ApiController]
-    [Route("BackEnd/[controller]")]
-    public class ZwierzetaController
+    
+    public class ZwierzetaController : BazaController
     {
         private readonly PrzechowajDane _dane;
         public ZwierzetaController(PrzechowajDane dane)
@@ -29,7 +28,9 @@ namespace BackEnd.Controllers
 
         public async Task<ActionResult<Zwierze>> GetZwierze(int id)
         {
-            return await _dane.Zwierzeta.FindAsync(id);
+            var product = await _dane.Zwierzeta.FindAsync(id);
+            if(product==null) return NotFound();
+            return product;
         }
     }
 }
