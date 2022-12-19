@@ -1,4 +1,3 @@
-import { Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import agent from "../../app/api/agent";
 import { Zwierze } from "../../app/modele/zwierze";

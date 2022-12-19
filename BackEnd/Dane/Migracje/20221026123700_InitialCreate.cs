@@ -23,7 +23,8 @@ namespace BackEnd.Dane.Migracje
                     ZdjecieUrl = table.Column<string>(type: "TEXT", nullable: true),
                     Typ = table.Column<string>(type: "TEXT", nullable: true),
                     Gatunek = table.Column<string>(type: "TEXT", nullable: true),
-                    Lokalizacja = table.Column<string>(type: "TEXT", nullable: true)
+                    Lokalizacja = table.Column<string>(type: "TEXT", nullable: true),
+                    Zarezerwowane = table.Column<bool>(type: "BOOL", nullable: true)
                 },
                 constraints: table =>
                 {

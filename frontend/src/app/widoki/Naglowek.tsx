@@ -1,6 +1,7 @@
 import { ShoppingCart } from "@mui/icons-material";
 import { AppBar, Badge, Box, IconButton, List, ListItem, Switch, Toolbar, Typography } from "@mui/material";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
+import { useStoreContext } from "../context/StoreContext";
 
 interface Props {
     trybCiemny: boolean;
@@ -32,6 +33,9 @@ const navStyles = {
 }
 
 export default function Naglowek({ trybCiemny, zmienStyl }: Props) {
+    const {koszyk} = useStoreContext();
+    const licznikKoszyka = koszyk?.przedmioty.reduce((sum)=>sum+1,0);
+
     return (
         <AppBar position='static' sx={{ mb: 4 }}>
             <Toolbar sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -42,7 +46,7 @@ export default function Naglowek({ trybCiemny, zmienStyl }: Props) {
                         width={35}
                     />
                     <Typography variant="h4" component={NavLink} to='/' sx={{ color: 'inherit', textDecoration: 'none' }} exact>
-                        Hoduje.pl
+                        Hoduje
                     </Typography>
                     <Switch checked={trybCiemny} onChange={zmienStyl} />
                 </Box>
@@ -59,8 +63,8 @@ export default function Naglowek({ trybCiemny, zmienStyl }: Props) {
                         ))}
                     </List>
                 <Box display='flex' alignItems='center'>
-                    <IconButton size='large' sx={{ color: 'inherit' }}>
-                        <Badge badgeContent={4} color='secondary'>
+                    <IconButton component={Link} to='/koszyk' size='large' sx={{ color: 'inherit' }}>
+                        <Badge badgeContent={licznikKoszyka} color='secondary'>
                             <ShoppingCart />
                         </Badge>
                 </IconButton>

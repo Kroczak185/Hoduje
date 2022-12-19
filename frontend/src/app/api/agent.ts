@@ -5,6 +5,7 @@ import{ history } from "../../index"
 const sleep = () => new Promise(resolve => setTimeout(resolve, 500));
 
 axios.defaults.baseURL = 'http://localhost:5000/BackEnd/';
+axios.defaults.withCredentials = true;
 
 const responseBody = (response: AxiosResponse) => response.data;
 
@@ -61,9 +62,16 @@ const TestErrors = {
     getValidationError: () => requests.get('Error/błąd-walidacji'),
 }
 
+const Koszyk = {
+    get: () => requests.get('koszyk'),
+    dodajItem: (ZwierzeId: number) => requests.post(`koszyk?ZwierzeId=${ZwierzeId}`,{}),
+    usunItem: (ZwierzeId: number) => requests.delete(`koszyk?ZwierzeId=${ZwierzeId}`)
+}
+
 const agent = {
     Catalog,
-    TestErrors
+    TestErrors,
+    Koszyk
 }
 
 export default agent;

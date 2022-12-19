@@ -54,6 +54,9 @@ namespace BackEnd.Dane.Migracje
                     b.Property<string>("ZdjecieUrl")
                         .HasColumnType("TEXT");
 
+                    b.Property<bool>("Zarezerwowane")
+                        .HasColumnType("BOOL");
+
                     b.HasKey("Id");
 
                     b.ToTable("Zwierzeta");

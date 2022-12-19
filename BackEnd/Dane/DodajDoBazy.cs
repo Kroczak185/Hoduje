@@ -26,6 +26,7 @@ namespace BackEnd.Dane
                     Gatunek = "Białogłowa",
                     Typ = "Owce",
                     Lokalizacja = "Wrocław",
+                    Zarezerwowane = false
                 },
                 new Zwierze
                 {
@@ -40,6 +41,7 @@ namespace BackEnd.Dane
                     Gatunek = "Białogłowa",
                     Typ = "Owce",
                     Lokalizacja = "Warszawa",
+                    Zarezerwowane = false
                 },
                 new Zwierze
                 {
@@ -54,6 +56,7 @@ namespace BackEnd.Dane
                     Gatunek = "Corriedale",
                     Typ = "Owce",
                     Lokalizacja = "Katowice",
+                    Zarezerwowane = false
                 },
                 new Zwierze
                 {
@@ -68,6 +71,7 @@ namespace BackEnd.Dane
                     Gatunek = "Mięsna",
                     Typ = "Krowa",
                     Lokalizacja = "Gliwice",
+                    Zarezerwowane = false
                 },
                 new Zwierze
                 {
@@ -82,6 +86,7 @@ namespace BackEnd.Dane
                     Gatunek = "Mięsna",
                     Typ = "Krowa",
                     Lokalizacja = "Katowice",
+                    Zarezerwowane = false
                 },
                 new Zwierze
                 {
@@ -96,6 +101,7 @@ namespace BackEnd.Dane
                     Gatunek = "Mieszana",
                     Typ = "Krowa",
                     Lokalizacja = "Wrocław",
+                    Zarezerwowane = true
                 },
             };
             foreach (var zwierze in zwierzeta)

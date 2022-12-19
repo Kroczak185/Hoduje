@@ -1,16 +1,21 @@
-import { Divider, Grid, Table, TableBody, TableCell, TableContainer, TableRow, Typography } from "@mui/material"
+import { LoadingButton } from "@mui/lab";
+import { Divider, Grid, Table, TableBody, TableCell, TableContainer, TableRow, TextField, Typography } from "@mui/material"
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom"
 import agent from "../../app/api/agent";
+import { useStoreContext } from "../../app/context/StoreContext";
 import NotFound from "../../app/errors/NotFound";
 import { Zwierze } from "../../app/modele/zwierze";
 import Ladowanie from "../../app/widoki/Ladownie";
 
 export default function ZwierzeSzczegoly(){
-    const {id} = useParams<{id: string}>();
 
+    const {koszyk,ustawKoszyk,usunItem} = useStoreContext();
+    const {id} = useParams<{id: string}>();
     const [zwierze, ustawZwierze] = useState<Zwierze | null>(null);
     const [ladowanie, ustawLadowanie] = useState(true);
+    const [submitting, setSubmitting] = useState(false);
+    const item = koszyk?.przedmioty.find(i=>i.zwierzeId === zwierze?.id);
 
     
     useEffect(()=>{
@@ -18,7 +23,25 @@ export default function ZwierzeSzczegoly(){
         .then(response => ustawZwierze(response))
         .catch(error => console.log(error))
         .finally(()=> ustawLadowanie(false));
-    },[id])
+    },[id, item])
+
+    function handleAktualizacjaKoszyka() {
+        setSubmitting(true);
+        if (!item) 
+        {
+            agent.Koszyk.dodajItem(zwierze?.id!)
+                .then(koszyk => ustawKoszyk(koszyk))
+                .catch(error => console.log(error))
+                .finally(() => setSubmitting(false));
+        } 
+        else 
+        {
+            agent.Koszyk.usunItem(zwierze?.id!)
+                .then(() => usunItem(zwierze?.id!))
+                .catch(error => console.log(error))
+                .finally(() => setSubmitting(false));
+        }
+    }
 
     if(ladowanie) return <Ladowanie message="Ładowanie... "/>
     if(!zwierze) return <NotFound />
@@ -75,9 +98,25 @@ export default function ZwierzeSzczegoly(){
                             <TableRow>
                                 <TableCell>Lokalizacja</TableCell>
                                 <TableCell>{zwierze.lokalizacja}</TableCell>
-                            </TableRow>  
+                            </TableRow>
                         </TableBody>
                     </Table>
+                    <Grid container spacing = {2}>
+                        <Grid item xs ={6}>
+                            <LoadingButton 
+                            sx={{height:'55px'}}
+                            color = 'primary'
+                            size = 'large'
+                            variant = 'contained'
+                            onClick = {handleAktualizacjaKoszyka}
+                            loading = {submitting}
+                            fullWidth>
+                                {item ? 'Usun z koszyka':'Dodaj do koszyka'}
+                            
+
+                            </LoadingButton>
+                        </Grid>
+                    </Grid>
                 </TableContainer>
             </Grid>
         </Grid>

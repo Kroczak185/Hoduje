@@ -10,4 +10,5 @@ export interface Zwierze {
     typ: string;
     gatunek: string;
     lokalizacja: string;
+    zarezerwowane: boolean;
 }

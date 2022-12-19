@@ -1,5 +1,5 @@
 import { Container, createTheme, CssBaseline, ThemeProvider } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Route, Switch } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import Autor from "../../funkcjonalnosci/autor/Autor";
@@ -12,8 +12,29 @@ import Naglowek from "./Naglowek";
 import 'react-toastify/dist/ReactToastify.css';
 import ServerError from "../errors/ServerError";
 import NotFound from "../errors/NotFound";
+import KoszykPage from "../../funkcjonalnosci/Koszyk/KoszykPage";
+import { useStoreContext } from "../context/StoreContext";
+import { getCookie } from "../format/cena";
+import agent from "../api/agent";
+import Ladowanie from "./Ladownie";
+import RezerwacjaPage from "../../funkcjonalnosci/rezerwacja/RezerwacjaPage";
 
 function App() {
+  const {ustawKoszyk} = useStoreContext();
+  const [ladowanie, ustawLadowanie] = useState(true);
+
+  useEffect(()=>{
+    const kupiecId = getCookie('KupiecId');
+    if (kupiecId){
+      agent.Koszyk.get()
+      .then(koszyk=>ustawKoszyk(koszyk))
+      .catch(error => console.log(error))
+      .finally(()=>ustawLadowanie(false))
+    }else{
+      ustawLadowanie(false)
+    }
+  }, [ustawKoszyk])
+
   const [trybCiemny, ustawTrybCiemny] = useState(false);
   const paletteType = trybCiemny ? 'dark' : 'light'
   const theme = createTheme({
@@ -29,6 +50,9 @@ function App() {
     ustawTrybCiemny(!trybCiemny);
   }
 
+
+  if (ladowanie) return <Ladowanie message='Inicjalizowanie aplikacji...' />
+
   return (
     <ThemeProvider theme={theme}>
       <ToastContainer position="bottom-right" />
@@ -43,6 +67,8 @@ function App() {
           <Route path='/kontakt' component={Kontakt} />
           <Route path='/errorstest' component={ErrorPage} />
           <Route path='/server-error' component={ServerError} />
+          <Route path='/koszyk' component={KoszykPage} />
+          <Route path='/rezerwacja' component={RezerwacjaPage} />
           <Route component={NotFound} />
         </Switch>
 

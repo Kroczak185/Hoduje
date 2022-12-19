@@ -10,5 +10,7 @@ namespace BackEnd.Dane
         }
 
         public DbSet<Zwierze> Zwierzeta{ get; set; }
+
+        public DbSet<Koszyk> Koszyki { get; set; }
     }
 }
