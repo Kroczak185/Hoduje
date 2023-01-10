@@ -1,54 +1,43 @@
 import { LoadingButton } from "@mui/lab";
-import { Divider, Grid, Table, TableBody, TableCell, TableContainer, TableRow, TextField, Typography } from "@mui/material"
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom"
-import agent from "../../app/api/agent";
-import { useStoreContext } from "../../app/context/StoreContext";
+import { Divider, Grid, Table, TableBody, TableCell, TableContainer, TableRow, Typography } from "@mui/material"
+import { useEffect } from "react";
+import { useParams } from "react-router-dom";
 import NotFound from "../../app/errors/NotFound";
-import { Zwierze } from "../../app/modele/zwierze";
 import Ladowanie from "../../app/widoki/Ladownie";
+import { dodajKoszykItemAsync, usunKoszykItemAsync } from "../Koszyk/koszykSlice";
+import { useAppDispatch, useAppSelector } from "../sklep/configureStore";
+import { fetchZwierzeAsync, zwierzeSelectors } from "./katalogSlice";
 
 export default function ZwierzeSzczegoly(){
 
-    const {koszyk,ustawKoszyk,usunItem} = useStoreContext();
     const {id} = useParams<{id: string}>();
-    const [zwierze, ustawZwierze] = useState<Zwierze | null>(null);
-    const [ladowanie, ustawLadowanie] = useState(true);
-    const [submitting, setSubmitting] = useState(false);
+    const {koszyk, status} = useAppSelector(state => state.koszyk);
+    const {status: zwierzeStatus} = useAppSelector(state => state.katalog);
+    const dispatch = useAppDispatch();
+    const zwierze = useAppSelector(state => zwierzeSelectors.selectById(state, id));
     const item = koszyk?.przedmioty.find(i=>i.zwierzeId === zwierze?.id);
 
     
     useEffect(()=>{
-        agent.Catalog.details(parseInt(id))
-        .then(response => ustawZwierze(response))
-        .catch(error => console.log(error))
-        .finally(()=> ustawLadowanie(false));
-    },[id, item])
+        if(!zwierze) dispatch(fetchZwierzeAsync(parseInt(id)))
+    },[id, item, dispatch,zwierze])
 
     function handleAktualizacjaKoszyka() {
-        setSubmitting(true);
         if (!item) 
         {
-            agent.Koszyk.dodajItem(zwierze?.id!)
-                .then(koszyk => ustawKoszyk(koszyk))
-                .catch(error => console.log(error))
-                .finally(() => setSubmitting(false));
+            dispatch(dodajKoszykItemAsync({zwierzeId: zwierze?.id!}))
         } 
         else 
         {
-            agent.Koszyk.usunItem(zwierze?.id!)
-                .then(() => usunItem(zwierze?.id!))
-                .catch(error => console.log(error))
-                .finally(() => setSubmitting(false));
+            dispatch(usunKoszykItemAsync({zwierzeId: zwierze?.id!}))
         }
     }
-
-    if(ladowanie) return <Ladowanie message="Ładowanie... "/>
+    if (zwierzeStatus.includes('pending')) return <Ladowanie message='Loading product...' />
     if(!zwierze) return <NotFound />
 
     var plec = "";
 
-    if(zwierze.plec==0){
+    if(zwierze.plec===0){
         plec = "Samiec";
     }
     else{
@@ -109,7 +98,7 @@ export default function ZwierzeSzczegoly(){
                             size = 'large'
                             variant = 'contained'
                             onClick = {handleAktualizacjaKoszyka}
-                            loading = {submitting}
+                            loading = {status.includes('pending')}
                             fullWidth>
                                 {item ? 'Usun z koszyka':'Dodaj do koszyka'}
                             

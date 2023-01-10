@@ -1,7 +1,7 @@
 import { ShoppingCart } from "@mui/icons-material";
 import { AppBar, Badge, Box, IconButton, List, ListItem, Switch, Toolbar, Typography } from "@mui/material";
 import { Link, NavLink } from "react-router-dom";
-import { useStoreContext } from "../context/StoreContext";
+import { useAppSelector } from "../../funkcjonalnosci/sklep/configureStore";
 
 interface Props {
     trybCiemny: boolean;
@@ -33,7 +33,7 @@ const navStyles = {
 }
 
 export default function Naglowek({ trybCiemny, zmienStyl }: Props) {
-    const {koszyk} = useStoreContext();
+    const {koszyk} = useAppSelector(state => state.koszyk);
     const licznikKoszyka = koszyk?.przedmioty.reduce((sum)=>sum+1,0);
 
     return (
@@ -63,11 +63,6 @@ export default function Naglowek({ trybCiemny, zmienStyl }: Props) {
                         ))}
                     </List>
                 <Box display='flex' alignItems='center'>
-                    <IconButton component={Link} to='/koszyk' size='large' sx={{ color: 'inherit' }}>
-                        <Badge badgeContent={licznikKoszyka} color='secondary'>
-                            <ShoppingCart />
-                        </Badge>
-                </IconButton>
                     <List sx={{ display: 'flex' }}>
                         {logLinki.map(({ tytul, sciezka }) => (
                             <ListItem
@@ -80,6 +75,11 @@ export default function Naglowek({ trybCiemny, zmienStyl }: Props) {
                             </ListItem>
                         ))}
                     </List>
+                    <IconButton component={Link} to='/koszyk' size='large' sx={{ color: 'inherit' }}>
+                        <Badge badgeContent={licznikKoszyka} color='secondary'>
+                            <ShoppingCart />
+                        </Badge>
+                    </IconButton>
                 </Box>
             </Toolbar>
         </AppBar>

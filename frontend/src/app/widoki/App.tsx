@@ -13,27 +13,28 @@ import 'react-toastify/dist/ReactToastify.css';
 import ServerError from "../errors/ServerError";
 import NotFound from "../errors/NotFound";
 import KoszykPage from "../../funkcjonalnosci/Koszyk/KoszykPage";
-import { useStoreContext } from "../context/StoreContext";
 import { getCookie } from "../format/cena";
 import agent from "../api/agent";
 import Ladowanie from "./Ladownie";
 import RezerwacjaPage from "../../funkcjonalnosci/rezerwacja/RezerwacjaPage";
+import { useAppDispatch } from "../../funkcjonalnosci/sklep/configureStore";
+import { ustawKoszyk } from "../../funkcjonalnosci/Koszyk/koszykSlice";
 
 function App() {
-  const {ustawKoszyk} = useStoreContext();
+  const dispatch = useAppDispatch();
   const [ladowanie, ustawLadowanie] = useState(true);
 
   useEffect(()=>{
     const kupiecId = getCookie('KupiecId');
     if (kupiecId){
       agent.Koszyk.get()
-      .then(koszyk=>ustawKoszyk(koszyk))
+      .then(koszyk=>dispatch(ustawKoszyk(koszyk)))
       .catch(error => console.log(error))
       .finally(()=>ustawLadowanie(false))
     }else{
       ustawLadowanie(false)
     }
-  }, [ustawKoszyk])
+  }, [dispatch])
 
   const [trybCiemny, ustawTrybCiemny] = useState(false);
   const paletteType = trybCiemny ? 'dark' : 'light'

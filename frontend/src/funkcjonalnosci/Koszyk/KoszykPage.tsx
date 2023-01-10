@@ -1,29 +1,17 @@
-import { Add, Delete, Remove } from "@mui/icons-material";
+import { Delete } from "@mui/icons-material";
 import { LoadingButton } from "@mui/lab";
-import { Box, Button, Grid, IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
-import { useEffect, useState } from "react";
+import { Box, Button, Grid, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
-import agent from "../../app/api/agent";
-import { useStoreContext } from "../../app/context/StoreContext";
+import { useAppDispatch, useAppSelector } from "../sklep/configureStore";
 import KoszykPodsumowanie from "./KoszykPodsumowanie";
+import { usunKoszykItemAsync } from "./koszykSlice";
 
 
 export default function KoszykPage() {
 
-    const { koszyk, ustawKoszyk, usunItem } = useStoreContext();
-    const [status,ustawStatus]=useState({
-        ladowanie: false,
-        nazwa: ''
-    });
+    const { koszyk, status } = useAppSelector(state => state.koszyk);
+    const dispatch = useAppDispatch();
 
-
-    function handleRemoveItem(zwierzeId: number, nazwa: string) {
-        ustawStatus({ladowanie: true, nazwa});
-        agent.Koszyk.usunItem(zwierzeId)
-            .then(() => usunItem(zwierzeId ))
-            .catch(error => console.log(error))
-            .finally(()=>ustawStatus({ladowanie:false ,nazwa: ''}))
-    }
 
     if (!koszyk) return <Typography variant='h3'>Twój koszyk jest pusty!</Typography>
 
@@ -40,30 +28,31 @@ export default function KoszykPage() {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {koszyk.przedmioty.map(item => {
-                            return (
+                        {koszyk.przedmioty.map(item => 
+                        {
+                            return(
                                 <TableRow
                                     key={item.zwierzeId}
-                                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                >
+                                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                                     <TableCell component="th" scope="row">
                                         <Box display='flex' alignItems='center'>
                                             <img src={item.zdjecieUrl} alt={item.nazwa} style={{ height: 50, marginRight: 20 }} />
-                                            <span>{item.nazwa}</span>
+                                            <Typography component={Link} to={`/katalog/${item.zwierzeId}`} >{item.nazwa}</Typography>
                                         </Box>
                                     </TableCell>
                                     <TableCell align="right">{item.lokalizacja}</TableCell>
                                     <TableCell align="right">{(item.cena / 100).toFixed(2)}zł</TableCell>
                                     <TableCell align="right">
                                         <LoadingButton 
-                                        loading={status.ladowanie &&status.nazwa ==='del' + item.zwierzeId} 
-                                        onClick={()=>handleRemoveItem(item.zwierzeId, 'del' + item.zwierzeId)} 
+                                        
+                                        loading={status === 'pendingRemoveItem' + item.zwierzeId + 'del'}
+                                        onClick={() => dispatch(usunKoszykItemAsync({zwierzeId: item.zwierzeId, name: 'del'}))}
                                         color='error'>
                                             <Delete />
                                         </LoadingButton>
                                     </TableCell>
-                                </TableRow>
-                            );
+                                </TableRow>)
+                            
                         })}
                     </TableBody>
                 </Table>

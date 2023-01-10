@@ -39,7 +39,7 @@ namespace BackEnd.Controllers
 
             var product = await _context.Zwierzeta.FindAsync(ZwierzeId);
 
-            if (product == null) return NotFound();
+            if (product == null) return BadRequest(new ProblemDetails{Title = "Produktu nie znaleziono"});
 
             var founded = Koszyk.Przedmioty.Find(item => item.ZwierzeId == product.Id);
 
