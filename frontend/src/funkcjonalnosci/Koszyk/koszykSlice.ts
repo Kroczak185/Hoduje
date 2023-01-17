@@ -1,5 +1,6 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, isAnyOf } from "@reduxjs/toolkit";
 import agent from "../../app/api/agent";
+import { getCookie } from "../../app/format/cena";
 import { Koszyk } from "../../app/modele/koszyk";
 
 interface KoszykState {
@@ -11,6 +12,22 @@ const initialState: KoszykState = {
     koszyk: null,
     status: 'idle'
 }
+
+export const fetchKoszykAsync = createAsyncThunk<Koszyk>(
+    'koszyk/fetchKoszykAsync',
+    async (_, thunkAPI) => {
+        try {
+            return await agent.Koszyk.get();
+        } catch (error: any) {
+            return thunkAPI.rejectWithValue({error: error.data});
+        }
+    },
+    {
+        condition: () => {
+            if (!getCookie('kupiecId')) return false;
+        }
+    }
+)
 
 export const dodajKoszykItemAsync = createAsyncThunk<Koszyk, {zwierzeId: number, XXX?: number}>(
     'koszyk/dodajKoszykItemAsync',
@@ -41,6 +58,9 @@ export const koszykSlice = createSlice({
     reducers: {
         ustawKoszyk: (state, action) => {
             state.koszyk = action.payload
+        },
+        wyczyscKoszyk: (state) => {
+            state.koszyk = null;
         }
     },
     extraReducers: (builder => {
@@ -68,8 +88,16 @@ export const koszykSlice = createSlice({
         builder.addCase(usunKoszykItemAsync.rejected, (state, action) => {
             console.log(action.payload);
             state.status = 'idle';
-        })
+        });
+        builder.addMatcher(isAnyOf(dodajKoszykItemAsync.fulfilled, fetchKoszykAsync.fulfilled), (state, action) => {
+            state.koszyk = action.payload;
+            state.status = 'idle';
+        });
+        builder.addMatcher(isAnyOf(dodajKoszykItemAsync.rejected, fetchKoszykAsync.rejected), (state, action) => {
+            console.log(action.payload);
+            state.status = 'idle';
+        });
     })
 })
 
-export const {ustawKoszyk} = koszykSlice.actions;
+export const {ustawKoszyk, wyczyscKoszyk} = koszykSlice.actions;

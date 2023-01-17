@@ -1,15 +1,38 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using BackEnd.Podmioty;
 using Microsoft.AspNetCore.Components.Web.Virtualization;
+using Microsoft.AspNetCore.Identity;
 
 namespace BackEnd.Dane
 {
     public static class DodajDoBazy
     {
-        public static void Wywolaj(PrzechowajDane context)
+        public static async Task Wywolaj(PrzechowajDane context,UserManager<Uzytkownik> userManager)
         {
+            if (!userManager.Users.Any())
+            {
+                var user = new Uzytkownik
+                {
+                    UserName = "bob",
+                    Email = "bob@test.com"
+                };
+
+                await userManager.CreateAsync(user, "Pa$$w0rd");
+                await userManager.AddToRoleAsync(user, "Member");
+
+                var admin = new Uzytkownik
+                {
+                    UserName = "admin",
+                    Email = "admin@test.com"
+                };
+
+                await userManager.CreateAsync(admin, "Pa$$w0rd");
+                await userManager.AddToRolesAsync(admin, new[] {"Member", "Admin"});
+            }
+
             if(context.Zwierzeta.Any()) return;
             
             var zwierzeta = new List<Zwierze>{
@@ -60,7 +83,7 @@ namespace BackEnd.Dane
                 },
                 new Zwierze
                 {
-                    Nazwa = "Krowa 150kg",
+                    Nazwa = "Krowy 150kg",
                     Opis =
                         "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Maecenas porttitor congue massa. Fusce posuere, magna sed pulvinar ultricies, purus lectus malesuada libero, sit amet commodo magna eros quis urna.",
                     Cena = 17500,
@@ -69,7 +92,7 @@ namespace BackEnd.Dane
                     Plec = Gender.Samica,
                     ZdjecieUrl = "/images/zwierzeta/krowa_miesna1.png",
                     Gatunek = "Mięsna",
-                    Typ = "Krowa",
+                    Typ = "Krowy",
                     Lokalizacja = "Gliwice",
                     Zarezerwowane = false
                 },
@@ -84,9 +107,9 @@ namespace BackEnd.Dane
                     Plec = Gender.Samiec,
                     ZdjecieUrl = "/images/zwierzeta/krowa_miesna2.png",
                     Gatunek = "Mięsna",
-                    Typ = "Krowa",
+                    Typ = "Krowy",
                     Lokalizacja = "Katowice",
-                    Zarezerwowane = false
+                    Zarezerwowane = true
                 },
                 new Zwierze
                 {
@@ -99,9 +122,39 @@ namespace BackEnd.Dane
                     Plec = Gender.Samiec,
                     ZdjecieUrl = "/images/zwierzeta/krowa_mieszana1.png",
                     Gatunek = "Mieszana",
-                    Typ = "Krowa",
+                    Typ = "Krowy",
                     Lokalizacja = "Wrocław",
                     Zarezerwowane = true
+                },
+                new Zwierze
+                {
+                    Nazwa = "Krowy mleczna",
+                    Opis =
+                        "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Maecenas porttitor congue massa. Fusce posuere, magna sed pulvinar ultricies, purus lectus malesuada libero, sit amet commodo magna eros quis urna.",
+                    Cena = 25000,
+                    Wiek = 2,
+                    Waga = 4220,
+                    Plec = Gender.Samiec,
+                    ZdjecieUrl = "/images/zwierzeta/krowa_mieszana1.png",
+                    Gatunek = "Mieszana",
+                    Typ = "Krowy",
+                    Lokalizacja = "Katowice",
+                    Zarezerwowane = false
+                },
+                new Zwierze
+                {
+                    Nazwa = "Byk byk byk",
+                    Opis =
+                        "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Maecenas porttitor congue massa. Fusce posuere, magna sed pulvinar ultricies, purus lectus malesuada libero, sit amet commodo magna eros quis urna.",
+                    Cena = 4500,
+                    Wiek = 5,
+                    Waga = 11170,
+                    Plec = Gender.Samiec,
+                    ZdjecieUrl = "/images/zwierzeta/krowa_miesna2.png",
+                    Gatunek = "Mieszana",
+                    Typ = "Krowy",
+                    Lokalizacja = "Jawor",
+                    Zarezerwowane = false
                 },
             };
             foreach (var zwierze in zwierzeta)

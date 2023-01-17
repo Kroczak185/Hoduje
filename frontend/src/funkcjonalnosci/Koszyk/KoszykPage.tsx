@@ -28,38 +28,37 @@ export default function KoszykPage() {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {koszyk.przedmioty.map(item => 
-                        {
-                            return(
+                        {koszyk.przedmioty.map(item => {
+                            return (
                                 <TableRow
                                     key={item.zwierzeId}
                                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                                     <TableCell component="th" scope="row">
                                         <Box display='flex' alignItems='center'>
                                             <img src={item.zdjecieUrl} alt={item.nazwa} style={{ height: 50, marginRight: 20 }} />
-                                            <Typography component={Link} to={`/katalog/${item.zwierzeId}`} >{item.nazwa}</Typography>
+                                            <Typography component={Link} to={`/katalog/${item.zwierzeId}`} sx={{ color: 'inherit', textDecoration: 'none' }}>{item.nazwa}</Typography>
                                         </Box>
                                     </TableCell>
                                     <TableCell align="right">{item.lokalizacja}</TableCell>
                                     <TableCell align="right">{(item.cena / 100).toFixed(2)}zł</TableCell>
                                     <TableCell align="right">
-                                        <LoadingButton 
-                                        
-                                        loading={status === 'pendingRemoveItem' + item.zwierzeId + 'del'}
-                                        onClick={() => dispatch(usunKoszykItemAsync({zwierzeId: item.zwierzeId, name: 'del'}))}
-                                        color='error'>
+                                        <LoadingButton
+
+                                            loading={status === 'pendingRemoveItem' + item.zwierzeId + 'del'}
+                                            onClick={() => dispatch(usunKoszykItemAsync({ zwierzeId: item.zwierzeId, name: 'del' }))}
+                                            color='error'>
                                             <Delete />
                                         </LoadingButton>
                                     </TableCell>
                                 </TableRow>)
-                            
+
                         })}
                     </TableBody>
                 </Table>
             </TableContainer>
             <Grid container>
-                <Grid item xs={6} />
-                <Grid item xs={6}>
+                <Grid item xs={12} />
+                <Grid item xs={12}>
                     <KoszykPodsumowanie />
                     <Button
                         component={Link}
@@ -67,9 +66,9 @@ export default function KoszykPage() {
                         variant='contained'
                         size='large'
                         fullWidth
-                    >DALEJ</Button>
+                    >ZAREZERWUJ</Button>
                 </Grid>
-                        </Grid>
+            </Grid>
         </>
 
     )

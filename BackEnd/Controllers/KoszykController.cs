@@ -1,8 +1,8 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using API.DTOs;
 using BackEnd.Dane;
+using BackEnd.Dodatki;
 using BackEnd.DTOs;
 using BackEnd.Podmioty;
 using Microsoft.AspNetCore.Http;
@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BackEnd.Controllers
 {
-    public class KoszykController :BazaController
+    public class KoszykController : BazaController
     {
         private readonly PrzechowajDane _context;
 
@@ -23,43 +23,43 @@ namespace BackEnd.Controllers
         [HttpGet(Name = "GetKoszyk")]
         public async Task<ActionResult<KoszykDto>> GetKoszyk()
         {
-            var koszyk = await OdzyskajKoszyk();
+            var koszyk = await OdzyskajKoszyk(GetKupiecId());
 
             if (koszyk == null) return NotFound();
 
-            return MapKoszykToDto(koszyk);
+            return koszyk.MapKoszykDoDto();
         }
 
         [HttpPost]
         public async Task<ActionResult<KoszykDto>> DodajItemDoKoszyk(int ZwierzeId)
         {
-            var Koszyk = await OdzyskajKoszyk();
+            var Koszyk = await OdzyskajKoszyk(GetKupiecId());
 
             if (Koszyk == null) Koszyk = UtworzKoszyk();
 
-            var product = await _context.Zwierzeta.FindAsync(ZwierzeId);
+            var zwierze = await _context.Zwierzeta.FindAsync(ZwierzeId);
 
-            if (product == null) return BadRequest(new ProblemDetails{Title = "Produktu nie znaleziono"});
+            if (zwierze == null) return BadRequest(new ProblemDetails { Title = "Produktu nie znaleziono" });
 
-            var founded = Koszyk.Przedmioty.Find(item => item.ZwierzeId == product.Id);
+            var founded = Koszyk.Przedmioty.Find(item => item.ZwierzeId == zwierze.Id);
 
-            if (founded!=null) 
+            if (founded != null)
 
-            return BadRequest(new ProblemDetails{Title = "Obecne zwierze znajduje się już w koszyku!!!"});
+                return BadRequest(new ProblemDetails { Title = "Obecne zwierze znajduje się już w koszyku!!!" });
 
-            Koszyk.DodajZwierze(product);
+            Koszyk.DodajZwierze(zwierze);
 
             var result = await _context.SaveChangesAsync() > 0;
 
-            if (result) return CreatedAtRoute("GetKoszyk", MapKoszykToDto(Koszyk));
+            if (result) return CreatedAtRoute("GetKoszyk", Koszyk.MapKoszykDoDto());
 
-            return BadRequest(new ProblemDetails{Title = "Problem z dodawaniem do Koszyka"});
+            return BadRequest(new ProblemDetails { Title = "Problem z dodawaniem do Koszyka" });
         }
 
         [HttpDelete]
         public async Task<ActionResult> UsunKoszykItem(int ZwierzeID)
         {
-            var koszyk = await OdzyskajKoszyk();
+            var koszyk = await OdzyskajKoszyk(GetKupiecId());
 
             if (koszyk == null) return NotFound();
 
@@ -69,46 +69,39 @@ namespace BackEnd.Controllers
 
             if (wynik) return Ok();
 
-            return BadRequest(new ProblemDetails{Title = "Wystąpił problem z usuwaniem koszyka."});
+            return BadRequest(new ProblemDetails { Title = "Wystąpił problem z usuwaniem koszyka." });
         }
 
-        private async Task<Koszyk> OdzyskajKoszyk()
+        private async Task<Koszyk> OdzyskajKoszyk(string kupiecId)
         {
+            if (string.IsNullOrEmpty(kupiecId))
+            {
+                Response.Cookies.Delete("kupiecId");
+                return null;
+            }
             return await _context.Koszyki
                 .Include(i => i.Przedmioty)
                 .ThenInclude(p => p.Zwierze)
-                .FirstOrDefaultAsync(x => x.KupiecId == Request.Cookies["KupiecId"]);
+                .FirstOrDefaultAsync(x => x.KupiecId == kupiecId);
         }
 
         private Koszyk UtworzKoszyk()
         {
-            var KupiecId = Guid.NewGuid().ToString();
-            var cookieOptions = new CookieOptions{IsEssential = true, Expires = DateTime.Now.AddDays(30)};
-            Response.Cookies.Append("KupiecId", KupiecId, cookieOptions);
-            var Koszyk = new Koszyk{KupiecId = KupiecId};
-            _context.Koszyki.Add(Koszyk);
-            return Koszyk;
+            var kupiecId = User.Identity?.Name;
+            if (string.IsNullOrEmpty(kupiecId))
+            {
+                kupiecId = Guid.NewGuid().ToString();
+                var cookieOptions = new CookieOptions { IsEssential = true, Expires = DateTime.Now.AddDays(30) };
+                Response.Cookies.Append("kupiecId", kupiecId, cookieOptions);
+            }
+            var koszyk = new Koszyk { KupiecId = kupiecId };
+            _context.Koszyki.Add(koszyk);
+            return koszyk;
         }
 
-        private KoszykDto MapKoszykToDto(Koszyk Koszyk)
+        private string GetKupiecId()
         {
-            return new KoszykDto
-            {
-                Id = Koszyk.Id,
-                KupiecId = Koszyk.KupiecId,
-                Przedmioty = Koszyk.Przedmioty.Select(item => new KoszykItemDto
-                {
-                    ZwierzeId = item.ZwierzeId,
-                    Nazwa = item.Zwierze.Nazwa,
-                    Cena = item.Zwierze.Cena,
-                    ZdjecieUrl = item.Zwierze.ZdjecieUrl,
-                    Typ = item.Zwierze.Typ,
-                    Gatunek = item.Zwierze.Gatunek,
-                    Lokalizacja = item.Zwierze.Lokalizacja,
-                    Zarezerwowane = item.Zwierze.Zarezerwowane
-                    
-                }).ToList()
-            };
+            return User.Identity?.Name ?? Request.Cookies["kupiecId"];
         }
     }
 }

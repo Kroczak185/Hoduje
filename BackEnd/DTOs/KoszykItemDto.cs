@@ -1,9 +1,5 @@
-namespace API.DTOs
+namespace BackEnd.DTOs
 {
-    public enum Gender{
-        Samiec,
-        Samica
-    }
     public class KoszykItemDto
     {
         public int ZwierzeId { get; set; }

@@ -1,5 +1,7 @@
 import { LoadingButton } from "@mui/lab";
-import { Avatar, Button, Card, CardActions, CardContent, CardHeader, CardMedia, Typography } from "@mui/material";
+import { Avatar, Button, Card, CardActions, CardContent, CardHeader, CardMedia, createMuiTheme, createTheme, makeStyles, Typography } from "@mui/material";
+import { deepPurple } from "@mui/material/colors";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Zwierze } from "../../app/modele/zwierze";
 import { dodajKoszykItemAsync, usunKoszykItemAsync } from "../Koszyk/koszykSlice";
@@ -14,26 +16,24 @@ export default function ZwierzeKarta({ zwierze }: Props) {
     const {koszyk, status} = useAppSelector(state=>state.koszyk)
     const dispatch = useAppDispatch();
     const item = koszyk?.przedmioty.find(i=>i.zwierzeId === zwierze?.id);
+
     
     return (
         <Card>
-            <CardHeader 
-                avatar={
-                    <Avatar sx={{bgcolor: 'secondary.main'}}>
-                        {zwierze.nazwa.charAt(0).toUpperCase()}
-                    </Avatar>
-                }
+            <CardMedia
+                component="img"
+                sx={{height: 150, backgroundSize: 'contain', bgcolor: 'transparent'}}
+                image={zwierze.zdjecieUrl}
                 title={zwierze.nazwa}
-                sx={{height:80, width: 265}}
+            />
+
+            <CardHeader 
+                
+                title={zwierze.nazwa}
+                sx={{height:40, width: 265}}
                 titleTypographyProps={{
                     sx: {fontWeight: 'bold', color: 'primary.main', fontSize:16}
                 }}
-                
-            />
-            <CardMedia
-                sx={{height: 265, backgroundSize: 'contain', bgcolor: 'transparent'}}
-                image={zwierze.zdjecieUrl}
-                title={zwierze.nazwa}
                 
             />
             <CardContent>
@@ -41,7 +41,7 @@ export default function ZwierzeKarta({ zwierze }: Props) {
                     {(zwierze.cena / 100).toFixed(2)}zł
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
-                    {zwierze.gatunek} / {zwierze.typ}
+                 {zwierze.typ} / {zwierze.lokalizacja} 
                 </Typography>
             </CardContent>
             <CardActions>

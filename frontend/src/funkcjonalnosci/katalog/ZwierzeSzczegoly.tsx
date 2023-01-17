@@ -32,7 +32,7 @@ export default function ZwierzeSzczegoly(){
             dispatch(usunKoszykItemAsync({zwierzeId: zwierze?.id!}))
         }
     }
-    if (zwierzeStatus.includes('pending')) return <Ladowanie message='Loading product...' />
+    if (zwierzeStatus.includes('pending')) return <Ladowanie message='Loading animal...' />
     if(!zwierze) return <NotFound />
 
     var plec = "";

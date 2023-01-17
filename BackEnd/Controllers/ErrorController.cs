@@ -27,10 +27,9 @@ namespace BackEnd.Controllers
         }
 
         [HttpGet("błąd-walidacji")]
-        public ActionResult GetValidationError()
+        public ActionResult GetValidationError() 
         {
-            ModelState.AddModelError("Problem1","To jest pierwszy error");
-            ModelState.AddModelError("Problem2","To jest drugi error");
+            ModelState.AddModelError("Walidacja","error");
             return ValidationProblem();
         }
 

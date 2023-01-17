@@ -12,3 +12,12 @@ export interface Zwierze {
     lokalizacja: string;
     zarezerwowane: boolean;
 }
+
+export interface ZwierzeParametry {
+    sortuj: string;
+    szukaj?: string;
+    typy: string[];
+    lokalizacja: string[];
+    numerStrony: number;
+    wielkoscStrony: number;
+}

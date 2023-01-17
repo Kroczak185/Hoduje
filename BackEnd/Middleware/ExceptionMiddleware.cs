@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-namespace API.Middleware
+namespace BackEnd.Middleware
 {
     public class ExceptionMiddleware
     {

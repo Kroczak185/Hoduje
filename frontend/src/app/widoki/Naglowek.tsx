@@ -2,17 +2,12 @@ import { ShoppingCart } from "@mui/icons-material";
 import { AppBar, Badge, Box, IconButton, List, ListItem, Switch, Toolbar, Typography } from "@mui/material";
 import { Link, NavLink } from "react-router-dom";
 import { useAppSelector } from "../../funkcjonalnosci/sklep/configureStore";
+import ZalogowanyMenu from "./ZalogowanyMenu";
 
 interface Props {
     trybCiemny: boolean;
     zmienStyl: () => void;
 }
-
-const linki = [
-    { tytul: 'katalog', sciezka: '/katalog' },
-    { tytul: 'autor', sciezka: '/autor' },
-    { tytul: 'kontakt', sciezka: '/kontakt' }
-]
 
 const logLinki = [
     { tytul: 'logowanie', sciezka: '/logowanie' },
@@ -27,14 +22,16 @@ const navStyles = {
         color: 'grey.500',
 
     },
-    '&.active': {
-        color: 'text.secondary'
+    '&:active': {
+        color: 'aeaeae'
     }
+    
 }
 
 export default function Naglowek({ trybCiemny, zmienStyl }: Props) {
-    const {koszyk} = useAppSelector(state => state.koszyk);
-    const licznikKoszyka = koszyk?.przedmioty.reduce((sum)=>sum+1,0);
+    const { koszyk } = useAppSelector(state => state.koszyk);
+    const { uzytkownik } = useAppSelector(state => state.konto);
+    const licznikKoszyka = koszyk?.przedmioty.reduce((sum) => sum + 1, 0);
 
     return (
         <AppBar position='static' sx={{ mb: 4 }}>
@@ -48,22 +45,21 @@ export default function Naglowek({ trybCiemny, zmienStyl }: Props) {
                     <Typography variant="h4" component={NavLink} to='/' sx={{ color: 'inherit', textDecoration: 'none' }} exact>
                         Hoduje
                     </Typography>
-                    <Switch checked={trybCiemny} onChange={zmienStyl} />
+
                 </Box>
+                <Box>
                     <List sx={{ display: 'flex' }}>
-                        {linki.map(({ tytul, sciezka }) => (
                             <ListItem
                                 component={NavLink}
-                                to={sciezka}
-                                key={sciezka}
+                                to={"/katalog"}
+                                key={"/katalog"}
                                 sx={navStyles}
                             >
-                                {tytul.toUpperCase()}
+                                KATALOG
                             </ListItem>
-                        ))}
-                    </List>
-                <Box display='flex' alignItems='center'>
-                    <List sx={{ display: 'flex' }}>
+                    
+                    {uzytkownik ? (<ListItem><ZalogowanyMenu /></ListItem>) : (
+                        <>
                         {logLinki.map(({ tytul, sciezka }) => (
                             <ListItem
                                 component={NavLink}
@@ -74,7 +70,17 @@ export default function Naglowek({ trybCiemny, zmienStyl }: Props) {
                                 {tytul.toUpperCase()}
                             </ListItem>
                         ))}
+                        </>
+                    )}
                     </List>
+                    
+                </Box>
+                <Box display='flex' alignItems='center'>
+                    
+                    
+                    <Typography>Darkmode</Typography>
+                    <Switch checked={trybCiemny} onChange={zmienStyl} />
+                    <Typography  component={Link} to='/koszyk' sx={{ color: 'inherit', textDecoration: 'none' }}>Koszyk</Typography>
                     <IconButton component={Link} to='/koszyk' size='large' sx={{ color: 'inherit' }}>
                         <Badge badgeContent={licznikKoszyka} color='secondary'>
                             <ShoppingCart />

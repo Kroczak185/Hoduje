@@ -1,17 +1,30 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
 import { toast } from "react-toastify";
+import { store } from "../../funkcjonalnosci/sklep/configureStore";
 import{ history } from "../../index"
+import { PodzialOdpowiedz } from "../modele/podzial";
 
 const sleep = () => new Promise(resolve => setTimeout(resolve, 500));
 
 axios.defaults.baseURL = 'http://localhost:5000/BackEnd/';
 axios.defaults.withCredentials = true;
 
-const responseBody = (response: AxiosResponse) => response.data;
+const odpowiedzBody = (odpowiedz: AxiosResponse) => odpowiedz.data;
 
-axios.interceptors.response.use(async response => {
+axios.interceptors.request.use(config => {
+    const token = store.getState().konto.uzytkownik?.token;
+    if (token) config.headers.Authorization = `Bearer ${token}`;
+    return config;
+})
+
+axios.interceptors.response.use(async odpowiedz => {
     await sleep();
-    return response;
+    const pagination = odpowiedz.headers['pagination'];
+    if (pagination) {
+        odpowiedz.data = new PodzialOdpowiedz(odpowiedz.data, JSON.parse(pagination));
+        return odpowiedz;
+    }
+    return odpowiedz;
 }, (error: AxiosError) => {
     const { data, status } = error.response!;
     switch (status) {
@@ -43,15 +56,16 @@ axios.interceptors.response.use(async response => {
 })
 
 const requests = {
-    get: (url: string) => axios.get(url).then(responseBody),
-    post: (url: string, body: {}) => axios.post(url, body).then(responseBody),
-    put: (url: string, body: {}) => axios.put(url, body).then(responseBody),
-    delete: (url: string) => axios.delete(url).then(responseBody),
+    get: (url: string, params?: URLSearchParams) => axios.get(url, {params}).then(odpowiedzBody),
+    post: (url: string, body: {}) => axios.post(url, body).then(odpowiedzBody),
+    put: (url: string, body: {}) => axios.put(url, body).then(odpowiedzBody),
+    delete: (url: string) => axios.delete(url).then(odpowiedzBody),
 }
 
-const Catalog = {
-    list: () => requests.get('zwierzeta'),
-    details: (id: number) => requests.get(`zwierzeta/${id}`)
+const Katalog = {
+    list: (params: URLSearchParams) => requests.get('zwierzeta', params),
+    details: (id: number) => requests.get(`zwierzeta/${id}`),
+    fetchFilters: () => requests.get('zwierzeta/filters')
 }
 
 const TestErrors = {
@@ -68,10 +82,18 @@ const Koszyk = {
     usunItem: (ZwierzeId: number) => requests.delete(`koszyk?ZwierzeId=${ZwierzeId}`)
 }
 
+const Konto = {
+    login: (wartosci: any) => requests.post('konto/login', wartosci),
+    rejestracja: (wartosci: any) => requests.post('konto/rejestracja', wartosci),
+    aktualnyUzytkownik: () => requests.get('konto/aktualnyUzytkownik'),
+}
+
+
 const agent = {
-    Catalog,
+    Katalog,
     TestErrors,
-    Koszyk
+    Koszyk,
+    Konto
 }
 
 export default agent;

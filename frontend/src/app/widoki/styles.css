@@ -1,3 +1,8 @@
 #root {
     background-image: "/image/cow_pattern.jpg"
 }
+
+@font-face {
+    font-family: 'YourCustomFontName';
+    src: '../format/Century_Gothic.ttf' format('truetype');
+}
