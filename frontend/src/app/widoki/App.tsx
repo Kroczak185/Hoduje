@@ -2,7 +2,6 @@ import { Container, createTheme, CssBaseline, ThemeProvider } from "@mui/materia
 import { useCallback, useEffect, useState } from "react";
 import { Route, Switch } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
-import ErrorPage from "../../funkcjonalnosci/error/ErrorPage";
 import Home from "../../funkcjonalnosci/home/Home";
 import Katalog from "../../funkcjonalnosci/katalog/Katalog";
 import ZwierzeSzczegoly from "../../funkcjonalnosci/katalog/ZwierzeSzczegoly";
@@ -13,13 +12,15 @@ import NotFound from "../errors/NotFound";
 import KoszykPage from "../../funkcjonalnosci/Koszyk/KoszykPage";
 import Ladowanie from "./Ladownie";
 import RezerwacjaPage from "../../funkcjonalnosci/rezerwacja/RezerwacjaPage";
-import { useAppDispatch } from "../../funkcjonalnosci/sklep/configureStore";
+import { useAppDispatch } from "../../funkcjonalnosci/redux/configureStore";
 import { fetchKoszykAsync, ustawKoszyk } from "../../funkcjonalnosci/Koszyk/koszykSlice";
 import { fetchAktualnyUzytkownik } from "../../funkcjonalnosci/konto/kontoSlice";
 import Rejestracja from "../../funkcjonalnosci/konto/Rejestracja";
 import Login from "../../funkcjonalnosci/konto/Login";
 import Ruty from "./Ruty";
 import { green, orange, red, yellow } from "@mui/material/colors";
+import dodajZwierze from "../../funkcjonalnosci/ogloszenia/dodajZwierze";
+import ErrorPage from "../../funkcjonalnosci/error/ErrorPage";
 
 function App() {
   const dispatch = useAppDispatch();
@@ -75,12 +76,13 @@ function App() {
           <Route exact path='/' component={Home} />
           <Route exact path='/katalog' component={Katalog} />
           <Route path='/katalog/:id' component={ZwierzeSzczegoly} />
-          <Route path='/errorstest' component={ErrorPage} />
           <Route path='/server-error' component={ServerError} />
           <Route path='/koszyk' component={KoszykPage} />
+          <Route path='/error' component={ErrorPage} />
           <Ruty path='/rezerwacja' component={RezerwacjaPage} />
           <Route path='/logowanie' component={Login} />
           <Route path='/rejestracja' component={Rejestracja} />
+          <Route path='/dodaj' component={dodajZwierze} />
           <Route component={NotFound} />
         </Switch>
 

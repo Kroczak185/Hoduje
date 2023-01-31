@@ -1,6 +1,6 @@
 import { TableContainer, Paper, Table, TableBody, TableRow, TableCell } from "@mui/material";
 import { wyswietlFormat } from "../../app/format/cena";
-import { useAppSelector } from "../sklep/configureStore";
+import { useAppSelector } from "../redux/configureStore";
 
 export default function KoszykPodsumowanie() {
     const {koszyk} = useAppSelector(state => state.koszyk);

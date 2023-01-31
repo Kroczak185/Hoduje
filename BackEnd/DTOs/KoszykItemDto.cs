@@ -10,5 +10,6 @@ namespace BackEnd.DTOs
         public string Gatunek { get; set; }
         public string Lokalizacja { get; set; }
         public bool Zarezerwowane { get; set; }
+        public string Email { get; set; }
     }
 }

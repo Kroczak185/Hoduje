@@ -1,6 +1,6 @@
 import { Grid } from "@mui/material";
 import { Zwierze } from "../../app/modele/zwierze";
-import { useAppSelector } from "../sklep/configureStore";
+import { useAppSelector } from "../redux/configureStore";
 import ZwierzeKarta from "./ZwierzeKarta";
 import ZwierzeKartaSzkielet from "./ZwierzeKartaSzkielet";
 

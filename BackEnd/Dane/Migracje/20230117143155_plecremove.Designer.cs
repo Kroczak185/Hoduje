@@ -3,6 +3,7 @@ using System;
 using BackEnd.Dane;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BackEnd.Dane.Migracje
 {
     [DbContext(typeof(PrzechowajDane))]
-    partial class PrzechowajDaneModelSnapshot : ModelSnapshot
+    [Migration("20230117143155_plecremove")]
+    partial class plecremove
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.13");
@@ -125,10 +127,10 @@ namespace BackEnd.Dane.Migracje
                     b.Property<long>("Cena")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Email")
+                    b.Property<string>("Gatunek")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Gatunek")
+                    b.Property<string>("KupiecId")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Lokalizacja")
@@ -188,15 +190,15 @@ namespace BackEnd.Dane.Migracje
                     b.HasData(
                         new
                         {
-                            Id = "d39438a1-bfb6-40e9-9905-511ca4848bd8",
-                            ConcurrencyStamp = "622f88c5-0798-4f30-8d7b-913eac978016",
+                            Id = "5a95ae71-38f4-45e7-899d-77f9dc782aa3",
+                            ConcurrencyStamp = "ef6ac9f3-8e03-4af2-adc8-e54e8135fff0",
                             Name = "Member",
                             NormalizedName = "MEMBER"
                         },
                         new
                         {
-                            Id = "1981c73e-526b-47bc-9d77-120326eddc87",
-                            ConcurrencyStamp = "3473d12c-6ae9-4d75-8d01-506bc1296de4",
+                            Id = "85edfd5b-7e55-4dd7-a71f-7feddc3fbf71",
+                            ConcurrencyStamp = "9b933ec1-e433-4dbf-b0a9-86ecc441a561",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         });

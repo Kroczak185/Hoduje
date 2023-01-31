@@ -16,8 +16,8 @@ namespace BackEnd.Dane
             {
                 var user = new Uzytkownik
                 {
-                    UserName = "bob",
-                    Email = "bob@test.com"
+                    UserName = "kowalski",
+                    Email = "kowalski@test.pl"
                 };
 
                 await userManager.CreateAsync(user, "Pa$$w0rd");
@@ -26,7 +26,7 @@ namespace BackEnd.Dane
                 var admin = new Uzytkownik
                 {
                     UserName = "admin",
-                    Email = "admin@test.com"
+                    Email = "admin@test.pl"
                 };
 
                 await userManager.CreateAsync(admin, "Pa$$w0rd");
@@ -44,12 +44,12 @@ namespace BackEnd.Dane
                     Cena = 2000,
                     Wiek = 2,
                     Waga = 4130,
-                    Plec = Gender.Samica,
                     ZdjecieUrl = "/images/zwierzeta/owca_bialoglowa.png",
                     Gatunek = "Białogłowa",
                     Typ = "Owce",
                     Lokalizacja = "Wrocław",
-                    Zarezerwowane = false
+                    Zarezerwowane = false,
+                    Email = "kowalski1@test.pl"
                 },
                 new Zwierze
                 {
@@ -59,102 +59,102 @@ namespace BackEnd.Dane
                     Cena = 3000,
                     Wiek = 3,
                     Waga = 3370,
-                    Plec = Gender.Samiec,
                     ZdjecieUrl = "/images/zwierzeta/owca_bialoglowa2.png",
                     Gatunek = "Białogłowa",
                     Typ = "Owce",
                     Lokalizacja = "Warszawa",
-                    Zarezerwowane = false
+                    Zarezerwowane = false,
+                    Email = "kowalski2@test.pl"
                 },
                 new Zwierze
                 {
-                    Nazwa = "Owca Corriedale zadbana",
+                    Nazwa = "Owca Corriedale",
                     Opis =
                         "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Maecenas porttitor congue massa. Fusce posuere, magna sed pulvinar ultricies, purus lectus malesuada libero, sit amet commodo magna eros quis urna.",
                     Cena = 7000,
                     Wiek = 1,
                     Waga = 2370,
-                    Plec = Gender.Samiec,
                     ZdjecieUrl = "/images/zwierzeta/owca_corriedale.png",
                     Gatunek = "Corriedale",
                     Typ = "Owce",
                     Lokalizacja = "Katowice",
-                    Zarezerwowane = false
+                    Zarezerwowane = false,
+                    Email = "kowalski3@test.pl"
                 },
                 new Zwierze
                 {
-                    Nazwa = "Krowy 150kg",
+                    Nazwa = "Krowa wysokocielna",
                     Opis =
                         "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Maecenas porttitor congue massa. Fusce posuere, magna sed pulvinar ultricies, purus lectus malesuada libero, sit amet commodo magna eros quis urna.",
                     Cena = 17500,
                     Wiek = 4,
                     Waga = 15400,
-                    Plec = Gender.Samica,
                     ZdjecieUrl = "/images/zwierzeta/krowa_miesna1.png",
                     Gatunek = "Mięsna",
                     Typ = "Krowy",
                     Lokalizacja = "Gliwice",
-                    Zarezerwowane = false
+                    Zarezerwowane = false,
+                    Email = "kowalski4@test.pl"
                 },
                 new Zwierze
                 {
-                    Nazwa = "Byk",
+                    Nazwa = "Duża krowa",
                     Opis =
                         "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Maecenas porttitor congue massa. Fusce posuere, magna sed pulvinar ultricies, purus lectus malesuada libero, sit amet commodo magna eros quis urna.",
                     Cena = 45000,
                     Wiek = 6,
                     Waga = 11370,
-                    Plec = Gender.Samiec,
-                    ZdjecieUrl = "/images/zwierzeta/krowa_miesna2.png",
+                    ZdjecieUrl = "https://static.topagrar.pl/media/articles/cow-min.png",
                     Gatunek = "Mięsna",
                     Typ = "Krowy",
                     Lokalizacja = "Katowice",
-                    Zarezerwowane = true
+                    Zarezerwowane = true,
+                    Email = "kowalski5@test.pl"
                 },
                 new Zwierze
                 {
-                    Nazwa = "Cielaczek",
+                    Nazwa = "Ciele",
                     Opis =
                         "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Maecenas porttitor congue massa. Fusce posuere, magna sed pulvinar ultricies, purus lectus malesuada libero, sit amet commodo magna eros quis urna.",
                     Cena = 250000,
                     Wiek = 1,
                     Waga = 4370,
-                    Plec = Gender.Samiec,
                     ZdjecieUrl = "/images/zwierzeta/krowa_mieszana1.png",
                     Gatunek = "Mieszana",
                     Typ = "Krowy",
                     Lokalizacja = "Wrocław",
-                    Zarezerwowane = true
+                    Zarezerwowane = true,
+                    Email = "kowalski6@test.pl"
                 },
                 new Zwierze
                 {
-                    Nazwa = "Krowy mleczna",
+                    Nazwa = "Sprzedam krowę mleczną",
                     Opis =
                         "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Maecenas porttitor congue massa. Fusce posuere, magna sed pulvinar ultricies, purus lectus malesuada libero, sit amet commodo magna eros quis urna.",
                     Cena = 25000,
                     Wiek = 2,
                     Waga = 4220,
-                    Plec = Gender.Samiec,
                     ZdjecieUrl = "/images/zwierzeta/krowa_mieszana1.png",
                     Gatunek = "Mieszana",
                     Typ = "Krowy",
                     Lokalizacja = "Katowice",
-                    Zarezerwowane = false
+                    Zarezerwowane = false,
+                    Email = "kowalski7@test.pl"
                 },
                 new Zwierze
                 {
-                    Nazwa = "Byk byk byk",
+                    Nazwa = "Krowa wysoko cielna 5 lat",
                     Opis =
                         "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Maecenas porttitor congue massa. Fusce posuere, magna sed pulvinar ultricies, purus lectus malesuada libero, sit amet commodo magna eros quis urna.",
                     Cena = 4500,
                     Wiek = 5,
                     Waga = 11170,
-                    Plec = Gender.Samiec,
                     ZdjecieUrl = "/images/zwierzeta/krowa_miesna2.png",
                     Gatunek = "Mieszana",
                     Typ = "Krowy",
                     Lokalizacja = "Jawor",
-                    Zarezerwowane = false
+                    Zarezerwowane = false,
+                    Email = "kowalski8@test.pl"
                 },
             };
             foreach (var zwierze in zwierzeta)

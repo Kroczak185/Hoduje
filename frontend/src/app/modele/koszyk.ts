@@ -6,6 +6,7 @@ export interface KoszykPrzedmiot {
     typ: string;
     gatunek: string;
     lokalizacja: string;
+    email: string;
 }
 
 export interface Koszyk {

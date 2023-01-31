@@ -1,7 +1,7 @@
 import { ShoppingCart } from "@mui/icons-material";
 import { AppBar, Badge, Box, IconButton, List, ListItem, Switch, Toolbar, Typography } from "@mui/material";
 import { Link, NavLink } from "react-router-dom";
-import { useAppSelector } from "../../funkcjonalnosci/sklep/configureStore";
+import { useAppSelector } from "../../funkcjonalnosci/redux/configureStore";
 import ZalogowanyMenu from "./ZalogowanyMenu";
 
 interface Props {
@@ -37,15 +37,14 @@ export default function Naglowek({ trybCiemny, zmienStyl }: Props) {
         <AppBar position='static' sx={{ mb: 4 }}>
             <Toolbar sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <Box display='flex' alignItems='center'>
+                    <Typography variant="h4" component={NavLink} to='/' sx={{ color: 'inherit', textDecoration: 'none' }} exact>
+                        Hoduje
+                    </Typography>
                     <img
                         src={`/images/hoduje_icon.ico`}
                         alt={`hoduje.pl`}
                         width={35}
                     />
-                    <Typography variant="h4" component={NavLink} to='/' sx={{ color: 'inherit', textDecoration: 'none' }} exact>
-                        Hoduje
-                    </Typography>
-
                 </Box>
                 <Box>
                     <List sx={{ display: 'flex' }}>
@@ -78,7 +77,7 @@ export default function Naglowek({ trybCiemny, zmienStyl }: Props) {
                 <Box display='flex' alignItems='center'>
                     
                     
-                    <Typography>Darkmode</Typography>
+                    <Typography>Tryb ciemny</Typography>
                     <Switch checked={trybCiemny} onChange={zmienStyl} />
                     <Typography  component={Link} to='/koszyk' sx={{ color: 'inherit', textDecoration: 'none' }}>Koszyk</Typography>
                     <IconButton component={Link} to='/koszyk' size='large' sx={{ color: 'inherit' }}>

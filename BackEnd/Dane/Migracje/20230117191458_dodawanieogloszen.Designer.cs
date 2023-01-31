@@ -3,6 +3,7 @@ using System;
 using BackEnd.Dane;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BackEnd.Dane.Migracje
 {
     [DbContext(typeof(PrzechowajDane))]
-    partial class PrzechowajDaneModelSnapshot : ModelSnapshot
+    [Migration("20230117191458_dodawanieogloszen")]
+    partial class dodawanieogloszen
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.13");

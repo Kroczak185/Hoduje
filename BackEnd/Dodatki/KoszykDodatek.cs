@@ -21,7 +21,8 @@ namespace BackEnd.Dodatki
                     Typ = item.Zwierze.Typ,
                     Gatunek = item.Zwierze.Gatunek,
                     Lokalizacja = item.Zwierze.Lokalizacja,
-                    Zarezerwowane = item.Zwierze.Zarezerwowane
+                    Zarezerwowane = item.Zwierze.Zarezerwowane,
+                    Email = item.Zwierze.Email
                 }).ToList()
             };
         }

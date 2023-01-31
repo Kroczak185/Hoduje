@@ -1,6 +1,6 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
 import { toast } from "react-toastify";
-import { store } from "../../funkcjonalnosci/sklep/configureStore";
+import { store } from "../../funkcjonalnosci/redux/configureStore";
 import{ history } from "../../index"
 import { PodzialOdpowiedz } from "../modele/podzial";
 
@@ -59,7 +59,13 @@ const requests = {
     get: (url: string, params?: URLSearchParams) => axios.get(url, {params}).then(odpowiedzBody),
     post: (url: string, body: {}) => axios.post(url, body).then(odpowiedzBody),
     put: (url: string, body: {}) => axios.put(url, body).then(odpowiedzBody),
-    delete: (url: string) => axios.delete(url).then(odpowiedzBody),
+    delete: (url: string) => axios.delete(url).then(odpowiedzBody)
+}
+
+const Admin = {
+    postZwierze: (zwierze: any) => requests.post('zwierzeta', zwierze),
+    putZwierze: (zwierze: any) => requests.put('zwierzeta', zwierze),
+    deleteZwierze: (id: number) => requests.delete(`zwierzeta/${id}`)
 }
 
 const Katalog = {
@@ -93,7 +99,8 @@ const agent = {
     Katalog,
     TestErrors,
     Koszyk,
-    Konto
+    Konto,
+    Admin
 }
 
 export default agent;

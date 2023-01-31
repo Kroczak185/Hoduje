@@ -1,6 +1,6 @@
 import { debounce, TextField } from "@mui/material";
 import { useState } from "react";
-import { useAppDispatch, useAppSelector } from "../sklep/configureStore";
+import { useAppDispatch, useAppSelector } from "../redux/configureStore";
 import { setZwierzeParams } from "./katalogSlice";
 
 export default function ZwierzeSzukaj() {
@@ -14,7 +14,7 @@ export default function ZwierzeSzukaj() {
 
     return (
         <TextField
-            label='Wyszukaj produkt'
+            label='Wyszukaj zwierze'
             variant='outlined'
             fullWidth
             value={szukaj || ''}

@@ -74,9 +74,6 @@ namespace BackEnd.Dane.Migracje
                     b.Property<string>("Opis")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("Plec")
-                        .HasColumnType("INTEGER");
-
                     b.Property<string>("Typ")
                         .HasColumnType("TEXT");
 

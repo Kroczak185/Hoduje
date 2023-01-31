@@ -4,7 +4,7 @@ import Przewijanie from "../../app/komponenty/Przewijanie";
 import PrzyciskCheckBox from "../../app/komponenty/PrzyciskCheckBox";
 import PrzyciskRadio from "../../app/komponenty/PrzyciskRadio";
 import Ladowanie from "../../app/widoki/Ladownie";
-import { useAppDispatch, useAppSelector } from "../sklep/configureStore";
+import { useAppDispatch, useAppSelector } from "../redux/configureStore";
 import { fetchFilters, fetchZwierzetaAsync, setNumerStrony, setZwierzeParams, zwierzeSelectors } from "./katalogSlice";
 import ZwierzeLista from "./ZwierzeLista";
 import ZwierzeSzukaj from "./ZwierzeSzukaj";

@@ -1,8 +1,9 @@
-import { Button, Menu, Fade, MenuItem } from "@mui/material";
+import { Button, Menu, Fade, MenuItem} from "@mui/material";
 import React from "react";
+import { Link } from "react-router-dom";
 import { wyloguj } from "../../funkcjonalnosci/konto/kontoSlice";
 import { wyczyscKoszyk } from "../../funkcjonalnosci/Koszyk/koszykSlice";
-import { useAppDispatch, useAppSelector } from "../../funkcjonalnosci/sklep/configureStore";
+import { useAppDispatch, useAppSelector } from "../../funkcjonalnosci/redux/configureStore";
 
 export default function ZalogowanyMenu() {
     const dispatch = useAppDispatch();
@@ -31,8 +32,7 @@ export default function ZalogowanyMenu() {
                 onClose={handleClose}
                 TransitionComponent={Fade}
             >
-                <MenuItem onClick={handleClose}>Profil</MenuItem>
-                <MenuItem onClick={handleClose}>Moje zamowienia</MenuItem>
+                <MenuItem component={Link} to='/dodaj' >Dodaj ogłoszenie</MenuItem>
                 <MenuItem onClick={() => {
                     dispatch(wyloguj());
                     dispatch(wyczyscKoszyk());

@@ -2,7 +2,7 @@ import { createAsyncThunk, createEntityAdapter, createSlice } from "@reduxjs/too
 import agent from "../../app/api/agent";
 import { MetaDane } from "../../app/modele/podzial";
 import { Zwierze, ZwierzeParametry } from "../../app/modele/zwierze";
-import { RootState } from "../sklep/configureStore";
+import { RootState } from "../redux/configureStore";
 
 const zwierzetaAdapter = createEntityAdapter<Zwierze>();
 
@@ -15,6 +15,8 @@ interface KatalogState {
     zwierzeParametry: ZwierzeParametry;
     metaDane: MetaDane | null;
 }
+
+const zwierzeAdapter = createEntityAdapter<Zwierze>();
 
 function axiosParametry(zwierzeParametry: ZwierzeParametry) {
     const parametry = new URLSearchParams();
@@ -99,6 +101,14 @@ export const katalogSlice = createSlice({
         },
         resetZwierzeParams: (state) => {
             state.zwierzeParametry = initParams();
+        },
+        setZwierze: (state, action) => {
+            zwierzeAdapter.upsertOne(state, action.payload);
+            state.zwierzetaZaladowane = false;
+        },
+        removeZwierze: (state, action) => {
+            zwierzeAdapter.removeOne(state, action.payload);
+            state.zwierzetaZaladowane = false;
         }
     },
     extraReducers: (builder => {
@@ -143,4 +153,4 @@ export const katalogSlice = createSlice({
 
 export const zwierzeSelectors = zwierzetaAdapter.getSelectors((state: RootState) => state.katalog);
 
-export const {setZwierzeParams, resetZwierzeParams, setMetaDane, setNumerStrony} = katalogSlice.actions;
+export const {setZwierzeParams, resetZwierzeParams, setMetaDane, setNumerStrony, setZwierze, removeZwierze} = katalogSlice.actions;

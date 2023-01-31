@@ -9,7 +9,7 @@ import { Paper } from '@mui/material';
 import { Link, useHistory, useLocation } from 'react-router-dom';
 import { FieldValues, useForm } from 'react-hook-form';
 import { LoadingButton } from '@mui/lab';
-import { useAppDispatch } from '../sklep/configureStore';
+import { useAppDispatch } from '../redux/configureStore';
 import { zalogujUzytkownik } from './kontoSlice';
 
 export default function Login() {

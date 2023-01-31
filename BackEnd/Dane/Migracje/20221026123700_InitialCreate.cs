@@ -19,7 +19,6 @@ namespace BackEnd.Dane.Migracje
                     Cena = table.Column<long>(type: "INTEGER", nullable: false),
                     Wiek = table.Column<long>(type: "INTEGER", nullable: false),
                     Waga = table.Column<long>(type: "INTEGER", nullable: false),
-                    Plec = table.Column<int>(type: "INTEGER", nullable: false),
                     ZdjecieUrl = table.Column<string>(type: "TEXT", nullable: true),
                     Typ = table.Column<string>(type: "TEXT", nullable: true),
                     Gatunek = table.Column<string>(type: "TEXT", nullable: true),

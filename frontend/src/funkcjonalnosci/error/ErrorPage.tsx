@@ -3,12 +3,12 @@ import { useState } from "react";
 import agent from "../../app/api/agent";
 
 export default function ErrorPage() {
-    const [validationErrors, setValidationErrors] = useState<string[]>([]);
+    const [errorWalidacji, setErrorWalidacji] = useState<string[]>([]);
 
     function getValidationError() {
         agent.TestErrors.getValidationError()
             .then(() => console.log('nie powinieneś tego widzieć'))
-            .catch(error => setValidationErrors(error));
+            .catch(error => setErrorWalidacji(error));
     }
 
     return (
@@ -21,11 +21,11 @@ export default function ErrorPage() {
                 <Button variant='contained' onClick={() => agent.TestErrors.get500Error().catch(error => console.log(error))}>Test 500 Error</Button>
                 <Button variant='contained' onClick={getValidationError}>Test Walidacji</Button>
             </ButtonGroup>
-            {validationErrors.length > 0 && 
+            {errorWalidacji.length > 0 && 
                 <Alert severity='error'>
-                    <AlertTitle>Validation Errors</AlertTitle>
+                    <AlertTitle>Error walidacji</AlertTitle>
                     <List>
-                        {validationErrors.map(error => (
+                        {errorWalidacji.map(error => (
                             <ListItem key={error}>
                                 <ListItemText>{error}</ListItemText>
                             </ListItem>

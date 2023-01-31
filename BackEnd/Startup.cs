@@ -64,12 +64,14 @@ namespace BackEnd
                 opt.UseSqlite(Configuration.GetConnectionString("DefaultConnection"));
             });
             services.AddCors();
+            
             services.AddIdentityCore<Uzytkownik>(opt =>
             {
                 opt.User.RequireUniqueEmail = true;
             })
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<PrzechowajDane>();
+
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(opt =>
                 {
@@ -83,6 +85,7 @@ namespace BackEnd
                             .GetBytes(Configuration["JWTSettings:TokenKey"]))
                     };
                 });
+                
             services.AddAuthorization();
             services.AddScoped<Token>();
         }
@@ -93,7 +96,6 @@ namespace BackEnd
             app.UseMiddleware<ExceptionMiddleware>();
             if (env.IsDevelopment())
             {
-                
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebAPIv5 v1"));
             }

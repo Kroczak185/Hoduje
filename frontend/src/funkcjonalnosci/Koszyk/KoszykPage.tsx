@@ -2,7 +2,7 @@ import { Delete } from "@mui/icons-material";
 import { LoadingButton } from "@mui/lab";
 import { Box, Button, Grid, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "../sklep/configureStore";
+import { useAppDispatch, useAppSelector } from "../redux/configureStore";
 import KoszykPodsumowanie from "./KoszykPodsumowanie";
 import { usunKoszykItemAsync } from "./koszykSlice";
 

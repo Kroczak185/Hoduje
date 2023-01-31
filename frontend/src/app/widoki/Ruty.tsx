@@ -1,6 +1,6 @@
 import { ComponentType } from "react";
 import { Redirect, Route, RouteComponentProps, RouteProps } from "react-router";
-import { useAppSelector } from "../../funkcjonalnosci/sklep/configureStore";
+import { useAppSelector } from "../../funkcjonalnosci/redux/configureStore";
 
 interface Props extends RouteProps {
     component: ComponentType<RouteComponentProps<any>> | ComponentType<any>

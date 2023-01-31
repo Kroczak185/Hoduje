@@ -5,7 +5,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Zwierze } from "../../app/modele/zwierze";
 import { dodajKoszykItemAsync, usunKoszykItemAsync } from "../Koszyk/koszykSlice";
-import { useAppDispatch, useAppSelector } from "../sklep/configureStore";
+import { useAppDispatch, useAppSelector } from "../redux/configureStore";
 
 interface Props {
     zwierze: Zwierze
